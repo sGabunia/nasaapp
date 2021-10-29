@@ -42,4 +42,4 @@ Start the server
 
 ## Screenshots
 
-![App Screenshot](./assets/space.jpg)
+![App Screenshot](./assets/Screenshot_13.png)
