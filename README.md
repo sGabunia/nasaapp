@@ -7,7 +7,9 @@ Get images from nasa api by date
 - React native
 - Worked with nasa api
 - With reusable components
-- used Pressable component with ripple effect for android
+- used react-native-date-picker library https://github.com/henninghall/react-native-date-picker
+- for now uses dummy image
+
 
 ## Appendix
 
