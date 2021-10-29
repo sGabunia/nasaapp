@@ -40,7 +40,7 @@ Install dependencies
 Start the server
 
 ```bash
-  expo run:android
+  expo run:android or expo run:ios
 ```
 
 ## Screenshots
