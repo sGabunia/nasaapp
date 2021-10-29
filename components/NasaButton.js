@@ -24,7 +24,9 @@ const styles = StyleSheet.create({
     borderRadius: 25,
   },
   text: {
-    color: "#000",
+    color: "#53504F",
     textAlign: "center",
+    fontWeight: "bold",
+    letterSpacing: 1,
   },
 });

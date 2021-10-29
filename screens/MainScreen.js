@@ -19,7 +19,7 @@ const MainScreen = ({ navigation }) => {
           <View>
             <HeaderText>Enjoyable </HeaderText>
             <HeaderText>experience of life</HeaderText>
-            <HeaderText>on Mars</HeaderText>
+            <HeaderText>in Space</HeaderText>
           </View>
           <NasaButton style={styles.button} onPress={handleNavigation}>
             Let's Start

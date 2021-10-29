@@ -19,13 +19,13 @@ const PhotoGalleryScreen = () => {
         resizeMode="cover"
       >
         <View style={styles.header}>
-          <HeaderText style={styles.title}>MARS & BEYOND</HeaderText>
+          <HeaderText style={styles.title}>SPACE & BEYOND</HeaderText>
           <Text style={styles.subtitle}>if we get lucky, maybe four years</Text>
         </View>
         <View style={styles.gallery}>
           <Image source={require("../assets/mars.jpg")} style={styles.image} />
           <View style={styles.description}>
-            <HeaderText>Mars 2024</HeaderText>
+            <HeaderText>Space 2024</HeaderText>
             <Text
               style={{
                 ...styles.subtitle,
@@ -75,7 +75,7 @@ const styles = StyleSheet.create({
     height: 400,
     padding: 15,
     marginTop: 30,
-    backgroundColor: "rgba(204, 209, 209, 0.4)",
+    backgroundColor: "rgba(204, 209, 209, 0.3)",
     borderRadius: 20,
   },
   image: {
