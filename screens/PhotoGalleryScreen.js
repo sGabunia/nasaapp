@@ -1,5 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import { Image, StyleSheet, Text, View, ImageBackground } from "react-native";
+import getData from "../services/api";
 import DatePicker from "react-native-date-picker";
 import HeaderText from "../components/HeaderText";
 import NasaButton from "../components/NasaButton";
@@ -7,6 +9,20 @@ import NasaButton from "../components/NasaButton";
 const PhotoGalleryScreen = () => {
   const [date, setDate] = useState(new Date());
   const [open, setOpen] = useState(false);
+  const [imageDetails, setImageDetails] = useState(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const ImageData = await getData.getImage(date);
+
+      setImageDetails({
+        title: ImageData.title,
+        imageUrl: ImageData.url,
+        author: ImageData.copyright,
+      });
+    };
+    fetchData();
+  }, [date]);
 
   const handleDatePick = () => {
     setOpen(true);
@@ -23,9 +39,12 @@ const PhotoGalleryScreen = () => {
           <Text style={styles.subtitle}>if we get lucky, maybe four years</Text>
         </View>
         <View style={styles.gallery}>
-          <Image source={require("../assets/mars.jpg")} style={styles.image} />
+          <Image
+            source={{ uri: imageDetails?.imageUrl }}
+            style={styles.image}
+          />
           <View style={styles.description}>
-            <HeaderText>Space 2024</HeaderText>
+            <HeaderText numberOfLines={1}>{imageDetails.author}</HeaderText>
             <Text
               style={{
                 ...styles.subtitle,
@@ -34,7 +53,7 @@ const PhotoGalleryScreen = () => {
                 fontSize: 13,
               }}
             >
-              the road to making humanity multiplanetary
+              {imageDetails.title}
             </Text>
           </View>
           <NasaButton onPress={handleDatePick}>Choose Date Now</NasaButton>
