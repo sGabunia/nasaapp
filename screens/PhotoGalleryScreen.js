@@ -17,8 +17,6 @@ const PhotoGalleryScreen = ({ navigation }) => {
   const [date, setDate] = useState(new Date());
   const [open, setOpen] = useState(false);
 
-  console.log(date);
-
   const handleDatePick = () => {
     setOpen(true);
   };
@@ -58,7 +56,7 @@ const PhotoGalleryScreen = ({ navigation }) => {
               onCancel={() => {
                 setOpen(false);
               }}
-              minimumDate={new Date("2021-01-01")}
+              maximumDate={new Date()}
               mode="date"
               textColor="firebrick"
             />

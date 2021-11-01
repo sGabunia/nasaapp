@@ -17,26 +17,27 @@ const PhotoDetails = ({ route }) => {
     error: false,
   });
 
+  const fetchData = async (choosenDate) => {
+    try {
+      setImageDetails({ imageInfo: {}, error: false, status: "pending" });
+      const imageData = await getData.getImage(choosenDate);
+      setImageDetails({
+        status: "resolved",
+        error: false,
+        imageInfo: {
+          title: imageData.title,
+          copyright: imageData.copyright,
+          imageUrl: imageData.url,
+          explanation: imageData.explanation,
+        },
+      });
+    } catch (error) {
+      setImageDetails({ imageInfo: {}, status: "resolved", error: true });
+    }
+  };
+
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        setImageDetails({ imageInfo: {}, error: false, status: "pending" });
-        const imageData = await getData.getImage(date);
-        setImageDetails({
-          status: "resolved",
-          error: false,
-          imageInfo: {
-            title: imageData.title,
-            copyright: imageData.copyright,
-            imageUrl: imageData.url,
-            explanation: imageData.explanation,
-          },
-        });
-      } catch (error) {
-        setImageDetails({ imageInfo: {}, status: "resolved", error: true });
-      }
-    };
-    fetchData();
+    fetchData(date);
   }, [date]);
 
   if (status === "idle" || status === "pending") {
