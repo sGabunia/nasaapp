@@ -67,7 +67,9 @@ const PhotoDetails = ({ route }) => {
         Photo by {imageInfo.copyright || "uknown author"}
       </Text>
       <Text style={styles.title}>{imageInfo.title}</Text>
-      <Text>{imageInfo.explanation}</Text>
+      <View style={styles.explanation}>
+        <Text>{imageInfo.explanation}</Text>
+      </View>
     </ScrollView>
   );
 };
@@ -77,6 +79,7 @@ export default PhotoDetails;
 const styles = StyleSheet.create({
   screen: {
     padding: 10,
+    paddingBottom: 25,
   },
   image: {
     width: "100%",
@@ -91,6 +94,9 @@ const styles = StyleSheet.create({
   copyright: {
     fontStyle: "italic",
     fontSize: 13,
+  },
+  explanation: {
+    paddingBottom: 25,
   },
   center: {
     flex: 1,
