@@ -1,32 +1,37 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Image, StyleSheet, Text, View, ImageBackground } from "react-native";
-import getData from "../services/api";
+import {
+  Image,
+  StyleSheet,
+  Text,
+  View,
+  ImageBackground,
+  LogBox,
+} from "react-native";
+
 import DatePicker from "react-native-date-picker";
 import HeaderText from "../components/HeaderText";
 import NasaButton from "../components/NasaButton";
 
-const PhotoGalleryScreen = () => {
+const PhotoGalleryScreen = ({ navigation }) => {
   const [date, setDate] = useState(new Date());
   const [open, setOpen] = useState(false);
-  const [imageDetails, setImageDetails] = useState(null);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const ImageData = await getData.getImage(date);
-
-      setImageDetails({
-        title: ImageData.title,
-        imageUrl: ImageData.url,
-        author: ImageData.copyright,
-      });
-    };
-    fetchData();
-  }, [date]);
+  console.log(date);
 
   const handleDatePick = () => {
     setOpen(true);
   };
+
+  const moveToDetailsScreen = () => {
+    navigation.navigate("Details", {
+      date: date,
+    });
+  };
+
+  LogBox.ignoreLogs([
+    "Non-serializable values were found in the navigation state",
+  ]);
   return (
     <View style={styles.screen}>
       <ImageBackground
@@ -38,37 +43,26 @@ const PhotoGalleryScreen = () => {
           <HeaderText style={styles.title}>SPACE & BEYOND</HeaderText>
           <Text style={styles.subtitle}>if we get lucky, maybe four years</Text>
         </View>
-        <View style={styles.gallery}>
-          <Image
-            source={{ uri: imageDetails?.imageUrl }}
-            style={styles.image}
-          />
-          <View style={styles.description}>
-            <HeaderText numberOfLines={1}>{imageDetails.author}</HeaderText>
-            <Text
-              style={{
-                ...styles.subtitle,
-                textTransform: "uppercase",
-                textAlign: "center",
-                fontSize: 13,
+        <View style={styles.galleryWrapper}>
+          <View style={styles.gallery}>
+            <NasaButton onPress={handleDatePick}>Choose Date Now</NasaButton>
+            <NasaButton onPress={moveToDetailsScreen}>Get the image</NasaButton>
+            <DatePicker
+              modal
+              open={open}
+              date={date}
+              onConfirm={(date) => {
+                setOpen(false);
+                setDate(date);
               }}
-            >
-              {imageDetails.title}
-            </Text>
+              onCancel={() => {
+                setOpen(false);
+              }}
+              minimumDate={new Date("2021-01-01")}
+              mode="date"
+              textColor="firebrick"
+            />
           </View>
-          <NasaButton onPress={handleDatePick}>Choose Date Now</NasaButton>
-          <DatePicker
-            modal
-            open={open}
-            date={date}
-            onConfirm={(date) => {
-              setOpen(false);
-              setDate(date);
-            }}
-            onCancel={() => {
-              setOpen(false);
-            }}
-          />
         </View>
       </ImageBackground>
     </View>
@@ -87,11 +81,18 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "#000",
   },
+  galleryWrapper: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    width: "100%",
+  },
+
   gallery: {
-    justifyContent: "flex-end",
+    justifyContent: "space-between",
     alignItems: "center",
     width: "80%",
-    height: 400,
+    height: 180,
     padding: 15,
     marginTop: 30,
     backgroundColor: "rgba(204, 209, 209, 0.3)",

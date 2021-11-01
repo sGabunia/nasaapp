@@ -2,6 +2,7 @@ import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import MainScreen from "../screens/MainScreen";
 import PhotoGalleryScreen from "../screens/PhotoGalleryScreen";
+import PhotoDetails from "../screens/PhotoDetails";
 
 const Stack = createNativeStackNavigator();
 
@@ -24,6 +25,7 @@ const NasaAppNavigator = () => {
           headerTintColor: "#fff",
         }}
       />
+      <Stack.Screen name="Details" component={PhotoDetails} />
     </Stack.Navigator>
   );
 };
