@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import DropDownPicker from "react-native-dropdown-picker";
 import {
-  Image,
   StyleSheet,
   Text,
   View,
   ImageBackground,
   LogBox,
+  Alert,
 } from "react-native";
 
 import DatePicker from "react-native-date-picker";
@@ -16,20 +16,37 @@ import NasaButton from "../components/NasaButton";
 const PhotoGalleryScreen = ({ navigation }) => {
   const [date, setDate] = useState(new Date());
   const [open, setOpen] = useState(false);
+  const [isModePickerOpen, setModePickerOpen] = useState(false);
+  const [modeValue, setModeValue] = useState(null);
+  const [items, setItems] = useState([
+    { label: "Full Info", value: "full" },
+    { label: "Picture Only", value: "picture" },
+  ]);
 
   const handleDatePick = () => {
     setOpen(true);
   };
 
   const moveToDetailsScreen = () => {
+    if (!date || !modeValue) {
+      Alert.alert(
+        "Enter more details",
+        "Enter date and choose mode",
+        [{ text: "OK", style: "cancel" }],
+        { cancelable: true }
+      );
+      return;
+    }
     navigation.navigate("Details", {
       date: date,
+      mode: modeValue,
     });
   };
 
   LogBox.ignoreLogs([
     "Non-serializable values were found in the navigation state",
   ]);
+
   return (
     <View style={styles.screen}>
       <ImageBackground
@@ -41,25 +58,60 @@ const PhotoGalleryScreen = ({ navigation }) => {
           <HeaderText style={styles.title}>SPACE & BEYOND</HeaderText>
           <Text style={styles.subtitle}>if we get lucky, maybe four years</Text>
         </View>
-        <View style={styles.galleryWrapper}>
-          <View style={styles.gallery}>
-            <NasaButton onPress={handleDatePick}>Choose Date Now</NasaButton>
-            <NasaButton onPress={moveToDetailsScreen}>Get the image</NasaButton>
-            <DatePicker
-              modal
-              open={open}
-              date={date}
-              onConfirm={(date) => {
-                setOpen(false);
-                setDate(date);
-              }}
-              onCancel={() => {
-                setOpen(false);
-              }}
-              maximumDate={new Date()}
-              mode="date"
-              textColor="firebrick"
-            />
+        <View
+          style={{
+            flex: 1,
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <View style={styles.dateWrapper}>
+            <Text style={styles.date}>{date.toLocaleDateString()}</Text>
+          </View>
+          <View style={styles.galleryWrapper}>
+            <View style={styles.gallery}>
+              <NasaButton onPress={handleDatePick}>Choose Date</NasaButton>
+              <View style={styles.mode}>
+                <DropDownPicker
+                  open={isModePickerOpen}
+                  value={modeValue}
+                  items={items}
+                  setOpen={setModePickerOpen}
+                  setValue={setModeValue}
+                  placeholder="Choose picture info type"
+                  style={{
+                    borderRadius: 25,
+                  }}
+                  labelStyle={{
+                    textAlign: "center",
+                    fontWeight: "bold",
+                    color: "#53504F",
+                  }}
+                  dropDownDirection="BOTTOM"
+                  itemSeparator={true}
+                  props={{ activeOpacity: 0.9 }}
+                  itemProps={{ activeOpacity: 0.7 }}
+                />
+              </View>
+              <NasaButton onPress={moveToDetailsScreen}>
+                Get the image
+              </NasaButton>
+              <DatePicker
+                modal
+                open={open}
+                date={date}
+                onConfirm={(date) => {
+                  setOpen(false);
+                  setDate(date);
+                }}
+                onCancel={() => {
+                  setOpen(false);
+                }}
+                maximumDate={new Date()}
+                mode="date"
+                textColor="firebrick"
+              />
+            </View>
           </View>
         </View>
       </ImageBackground>
@@ -76,34 +128,33 @@ const styles = StyleSheet.create({
   imageBackground: {
     flex: 1,
     padding: 15,
-    alignItems: "center",
     backgroundColor: "#000",
   },
   galleryWrapper: {
-    flex: 1,
-    justifyContent: "center",
     alignItems: "center",
     width: "100%",
-  },
-
-  gallery: {
-    justifyContent: "space-between",
-    alignItems: "center",
-    width: "80%",
-    height: 180,
-    padding: 15,
     marginTop: 30,
+    padding: 10,
+  },
+  dateWrapper: {
+    padding: 15,
+    borderColor: "#ccc",
+    borderWidth: 2,
+    borderRadius: 15,
+  },
+  date: {
+    fontSize: 20,
+    color: "white",
+    textAlign: "center",
+  },
+  gallery: {
+    width: "90%",
+    padding: 25,
     backgroundColor: "rgba(204, 209, 209, 0.3)",
     borderRadius: 20,
   },
-  image: {
-    width: "100%",
-    height: 250,
-    borderRadius: 20,
-    marginVertical: "auto",
-    position: "absolute",
-    top: -25,
-    left: 15,
+  mode: {
+    marginVertical: 20,
   },
   description: {
     alignItems: "center",

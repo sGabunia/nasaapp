@@ -10,7 +10,7 @@ import {
 } from "react-native";
 
 const PhotoDetails = ({ route }) => {
-  const { date } = route.params;
+  const { date, mode } = route.params;
   const [{ imageInfo, status, error }, setImageDetails] = useState({
     imageInfo: {},
     status: "idle",
@@ -60,16 +60,20 @@ const PhotoDetails = ({ route }) => {
     <ScrollView style={styles.screen}>
       <Image
         source={{ uri: imageInfo.imageUrl }}
-        style={styles.image}
+        style={{ ...styles.image, height: mode === "full" ? 300 : 500 }}
         resizeMode="cover"
       />
-      <Text style={styles.copyright}>
-        Photo by {imageInfo.copyright || "uknown author"}
-      </Text>
-      <Text style={styles.title}>{imageInfo.title}</Text>
-      <View style={styles.explanation}>
-        <Text>{imageInfo.explanation}</Text>
-      </View>
+      {mode === "full" && (
+        <View>
+          <Text style={styles.copyright}>
+            Photo by {imageInfo.copyright || "uknown author"}
+          </Text>
+          <Text style={styles.title}>{imageInfo.title}</Text>
+          <View style={styles.explanation}>
+            <Text>{imageInfo.explanation}</Text>
+          </View>
+        </View>
+      )}
     </ScrollView>
   );
 };

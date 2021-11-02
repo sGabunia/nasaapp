@@ -25,7 +25,17 @@ const NasaAppNavigator = () => {
           headerTintColor: "#fff",
         }}
       />
-      <Stack.Screen name="Details" component={PhotoDetails} />
+      <Stack.Screen
+        name="Details"
+        component={PhotoDetails}
+        initialParams={{ mode: "full" }}
+        options={({ route }) => ({
+          title:
+            route.params.mode === "full"
+              ? "Image Full Info"
+              : "Photo of the day",
+        })}
+      />
     </Stack.Navigator>
   );
 };
