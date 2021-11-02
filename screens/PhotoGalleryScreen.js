@@ -93,7 +93,7 @@ const PhotoGalleryScreen = ({ navigation }) => {
                   itemProps={{ activeOpacity: 0.7 }}
                 />
               </View>
-              <NasaButton onPress={moveToDetailsScreen}>
+              <NasaButton onPress={moveToDetailsScreen} arrow>
                 Get the image
               </NasaButton>
               <DatePicker

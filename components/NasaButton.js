@@ -1,8 +1,9 @@
 import React from "react";
 import { StyleSheet, Pressable, Text } from "react-native";
+import { MaterialIcons } from "@expo/vector-icons";
 
 const NasaButton = (props) => {
-  const { onPress, style, children } = props;
+  const { onPress, style, children, arrow = false } = props;
   return (
     <Pressable
       {...props}
@@ -10,6 +11,14 @@ const NasaButton = (props) => {
       onPress={onPress}
     >
       <Text style={styles.text}>{children}</Text>
+      {arrow && (
+        <MaterialIcons
+          name="arrow-forward"
+          size={24}
+          color="black"
+          style={{ marginLeft: 10 }}
+        />
+      )}
     </Pressable>
   );
 };
@@ -22,6 +31,9 @@ const styles = StyleSheet.create({
     padding: 15,
     backgroundColor: "#fff",
     borderRadius: 25,
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
   },
   text: {
     color: "#53504F",

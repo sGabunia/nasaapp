@@ -21,7 +21,7 @@ const MainScreen = ({ navigation }) => {
             <HeaderText>experience of life</HeaderText>
             <HeaderText>in Space</HeaderText>
           </View>
-          <NasaButton style={styles.button} onPress={handleNavigation}>
+          <NasaButton style={styles.button} onPress={handleNavigation} arrow>
             Let's Start
           </NasaButton>
         </View>
