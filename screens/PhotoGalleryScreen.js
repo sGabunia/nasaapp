@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from "react";
-import DropDownPicker from "react-native-dropdown-picker";
+import React, { useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -9,19 +8,15 @@ import {
   Alert,
 } from "react-native";
 
-import DatePicker from "react-native-date-picker";
 import HeaderText from "../components/HeaderText";
 import NasaButton from "../components/NasaButton";
+import ModePicker from "../components/ModePicker";
+import ChoosenDatePicker from "../components/ChoosenDatePicker";
 
 const PhotoGalleryScreen = ({ navigation }) => {
   const [date, setDate] = useState(new Date());
   const [open, setOpen] = useState(false);
-  const [isModePickerOpen, setModePickerOpen] = useState(false);
   const [modeValue, setModeValue] = useState(null);
-  const [items, setItems] = useState([
-    { label: "Full Info", value: "full" },
-    { label: "Picture Only", value: "picture" },
-  ]);
 
   const handleDatePick = () => {
     setOpen(true);
@@ -58,13 +53,7 @@ const PhotoGalleryScreen = ({ navigation }) => {
           <HeaderText style={styles.title}>SPACE & BEYOND</HeaderText>
           <Text style={styles.subtitle}>if we get lucky, maybe four years</Text>
         </View>
-        <View
-          style={{
-            flex: 1,
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
+        <View style={styles.container}>
           <View style={styles.dateWrapper}>
             <Text style={styles.date}>{date.toLocaleDateString()}</Text>
           </View>
@@ -72,44 +61,16 @@ const PhotoGalleryScreen = ({ navigation }) => {
             <View style={styles.gallery}>
               <NasaButton onPress={handleDatePick}>Choose Date</NasaButton>
               <View style={styles.mode}>
-                <DropDownPicker
-                  open={isModePickerOpen}
-                  value={modeValue}
-                  items={items}
-                  setOpen={setModePickerOpen}
-                  setValue={setModeValue}
-                  placeholder="Choose picture info type"
-                  style={{
-                    borderRadius: 25,
-                  }}
-                  labelStyle={{
-                    textAlign: "center",
-                    fontWeight: "bold",
-                    color: "#53504F",
-                  }}
-                  dropDownDirection="BOTTOM"
-                  itemSeparator={true}
-                  props={{ activeOpacity: 0.9 }}
-                  itemProps={{ activeOpacity: 0.7 }}
-                />
+                <ModePicker modeValue={modeValue} setModeValue={setModeValue} />
               </View>
               <NasaButton onPress={moveToDetailsScreen} arrow>
                 Get the image
               </NasaButton>
-              <DatePicker
-                modal
-                open={open}
+              <ChoosenDatePicker
                 date={date}
-                onConfirm={(date) => {
-                  setOpen(false);
-                  setDate(date);
-                }}
-                onCancel={() => {
-                  setOpen(false);
-                }}
-                maximumDate={new Date()}
-                mode="date"
-                textColor="firebrick"
+                setDate={setDate}
+                open={open}
+                setOpen={setOpen}
               />
             </View>
           </View>
@@ -124,6 +85,11 @@ export default PhotoGalleryScreen;
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
+  },
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
   },
   imageBackground: {
     flex: 1,
